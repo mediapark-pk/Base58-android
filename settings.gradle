@@ -1,0 +1,3 @@
+rootProject.name='Base58'
+include ':app'
+include ':base58android'
