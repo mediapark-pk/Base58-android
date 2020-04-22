@@ -5,6 +5,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import static com.mediaparkpk.base58android.Base58Utils.doubleDigest;
+
 public class Base58 {
     private static final String ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
     private static final BigInteger BASE = BigInteger.valueOf(58);
@@ -66,18 +68,5 @@ public class Base58 {
         return bytes;
     }
 
-    public static byte[] doubleDigest(byte[] input) {
-        return doubleDigest(input, 0, input.length);
-    }
 
-    public static byte[] doubleDigest(byte[] input, int offset, int length) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.update(input, offset, length);
-            byte[] first = digest.digest();
-            return digest.digest(first);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
