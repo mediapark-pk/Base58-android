@@ -1,11 +1,13 @@
 package com.mediaparkpk.base58android;
 
+import com.mediaparkpk.base58android.exceptions.Base58Exception;
+import com.mediaparkpk.base58android.utils.HashUtils;
+import com.mediaparkpk.base58android.utils.Sha256Hash;
+
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import static com.mediaparkpk.base58android.Base58Utils.doubleDigest;
+import static com.mediaparkpk.base58android.utils.Base58Utils.doubleDigest;
 
 public class Base58 {
     private static final String ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
@@ -66,6 +68,13 @@ public class Base58 {
         if (!Arrays.equals(hash, checksum))
             throw new Base58Exception("Checksum does not validate");
         return bytes;
+    }
+    public static String Base58encodeWithChecksum(byte[] input) {
+        byte[] b = new byte[input.length + 4];
+        System.arraycopy(input, 0, b, 0, input.length);
+        Sha256Hash checkSum = HashUtils.doubleSha256(b, 0, input.length);
+        System.arraycopy(checkSum.getBytes(), 0, b, input.length, 4);
+        return encode(b);
     }
 
 
