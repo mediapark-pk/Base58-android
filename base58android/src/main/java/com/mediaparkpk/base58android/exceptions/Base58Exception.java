@@ -1,4 +1,4 @@
-package com.mediaparkpk.base58android;
+package com.mediaparkpk.base58android.exceptions;
 
 public class Base58Exception extends Exception {
 
