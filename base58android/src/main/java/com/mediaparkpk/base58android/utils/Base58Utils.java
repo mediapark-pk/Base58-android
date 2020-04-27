@@ -1,7 +1,9 @@
-package com.mediaparkpk.base58android;
+package com.mediaparkpk.base58android.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import static com.mediaparkpk.base58android.Base58.encode;
 
 public class Base58Utils {
     public static byte[] doubleDigest(byte[] input) {
@@ -18,4 +20,12 @@ public class Base58Utils {
             throw new RuntimeException(e);
         }
     }
+    public static String encodeWithChecksum(byte[] input) {
+        byte[] b = new byte[input.length + 4];
+        System.arraycopy(input, 0, b, 0, input.length);
+        Sha256Hash checkSum = HashUtils.doubleSha256(b, 0, input.length);
+        System.arraycopy(checkSum.getBytes(), 0, b, input.length, 4);
+        return encode(b);
+    }
+
 }
